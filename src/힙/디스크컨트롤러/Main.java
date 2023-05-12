@@ -15,18 +15,30 @@ public class Main
         Solution.solution(new int[][]{ {1, 2}, {2, 7}, {0, 5}, {3, 3}});
     }
 }
+/*
+* 0초 - 5
+* */
 class Solution {
     public static int solution(int[][] jobs) {
         int answer = 0;
         Arrays.sort(jobs);
 
-        PriorityQueue<int[]> collect = new PriorityQueue<>(new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                return Integer.compare(o1[1], o2[1]);
-            }
-        });
+        PriorityQueue<int[]> pq = new PriorityQueue<>((c1, c2)-> (c1[1]-c2[1]));
+        pq.add(jobs[0]);// 0초에 바로 넣기
 
+        int time = 0; //총 걸린 시간
+        int endTime = 0;
+
+        for(int i=0; i< jobs.length; i++){
+            while(!pq.isEmpty()){
+                int[] nextJob = pq.remove();
+                time +=nextJob[1];
+                endTime +=nextJob[1];
+            }
+
+
+
+        }
 
 
 
