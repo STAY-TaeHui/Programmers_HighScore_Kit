@@ -13,7 +13,7 @@ public class Main
     {
 //[[0, 3], [1, 9], [2, 6]]
 //        Solution.solution(new int[][]{ {1, 2}, {2, 7}, {0, 5}, {3, 3}});
-        Solution.solution(new int[][]{ {0,3}, {1,9}, {2,6}});
+        Solution.solution(new int[][]{ {0,3}, {1,9}, {2,6}, {20,1}});
     }
 }
 /*
@@ -31,18 +31,18 @@ class Solution {
         int i = 0; // index
 
         while(job< jobs.length){ // 총 작업 횟수만큼 반복
-            while(i<jobs.length && jobs[i][0] <= endTime){ //
+            while(i<jobs.length && jobs[i][0] <= endTime){ //남은 작업이 있고 && 이전 작업 끝난 시각 이전에 요청이 들어온 작업
                 pq.add(jobs[i++]);
             }
 
-            if(pq.isEmpty()){
-                endTime = jobs[i][0];
+            if(pq.isEmpty()){ // Queue에 작업이 없을때 -> 디스크가 작업중이지 않을때
+                endTime = jobs[i][0]; // 이전 작업 끝난시각을 요청시각으로
             }
             else{
                 int[] nextJob = pq.remove();
-                totalEndTime += endTime +  nextJob[1] - nextJob[0];
-                endTime += nextJob[1];
-                job++;
+                totalEndTime += endTime +  nextJob[1] - nextJob[0]; // 이전 끝난시각 + 소요시간 - 요청시각
+                endTime += nextJob[1]; // 이전 끝난시각
+                job++; // 잡 종료
             }
         }
 
