@@ -11,7 +11,7 @@ public class Main
     public static void main(String[] args)
     {
 //        3, 30, 34, 5, 9
-        Solution.solution(new int[]{432, 43, 32, 4, 2, 433});
+        Solution.solution(new int[]{0,0,0});
     }
 }
 // 1. 첫번째 자리를 기준으로 정렬
@@ -29,14 +29,17 @@ public class Main
 // -
 class Solution {
     public static String solution(int[] numbers) {
-        String answer = "";
-
-        List<String> numbersStr = Arrays.stream(numbers)
+//        6, 10, 2
+//        1. (6, 10) -> 106 compareTo 610
+        String answer =
+        Arrays.stream(numbers)
             .mapToObj(String::valueOf)
-            .collect(Collectors.toList());
+            .sorted((o1, o2) -> (o2+o1).compareTo(o1+o2)) //3430 3034
+            .collect(Collectors.joining());
 
-        numbersStr.sort(Comparator.comparing(s -> s.charAt(0)).reversed().thenComparing());
-
+        if(answer.charAt(0) == '0'){
+            return "0";
+        }
 
         return answer;
     }
