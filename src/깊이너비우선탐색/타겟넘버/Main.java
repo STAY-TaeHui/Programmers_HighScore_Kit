@@ -10,43 +10,19 @@ public class Main
         Solution.solution(new int[]{4,1,2,1}, 4);
     }
 }
-//[4, 1, 2, 1]	4	2
-/*
-    +4+1-2+1 = 4
-    +4-1+2-1 = 4
-* */
-//[2, 3, 1] 2
-//-2 3 1
-//
 class Solution {
-    static boolean[] check ;
-    static int sum=0;
     static int answer = 0;
     public static int solution(int[] numbers, int target) {
-        check= new boolean[numbers.length];
-        dfs(1,  numbers, target);
+        dfs(0,  numbers, target,0);
 
         return answer;
     }
-    public static void dfs(int depth, int [] numbers, int target){
-        if(depth>numbers.length){// 다 더했을때
-            if(sum == target){
-                answer++;
-                return;
-            }
-            else return;
-        }
-        for(int i=0; i<numbers.length; i++){
-            if(!check[i]){
-                check[i] = true;
-                sum+=numbers[i];
-                dfs(depth+1, numbers, target);
-                sum -= numbers[i]*2;// 기존 넣었던거 빼기 + 음수로 바꿔서 더하기 ==> *2
-                dfs(depth+1, numbers, target);
-
-                sum += numbers[i];// 음수 더했던거 다시 돌리기
-                check[i] = false;
-            }
+    public static void dfs(int depth, int [] numbers, int target, int sum){
+        if (depth == numbers.length){
+            if(sum==target) answer++;
+        }else{
+            dfs(depth+1, numbers,target,sum+numbers[depth]);
+            dfs(depth+1, numbers,target,sum-numbers[depth]);
 
         }
     }
