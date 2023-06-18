@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 * */
 public class Main {
     public static void main(String[] args) {
-        System.out.println(Solution.solution(5, new int[]{2, 4}, new int[]{1, 3, 5}));
+//        System.out.println(Solution.solution(5, new int[]{2, 4}, new int[]{1, 3, 5}));
 //        System.out.println(Solution.solution(5,new int[]{2,4}, new int[]{3}));
-//        Solution.solution(3,new int[]{3}, new int[]{1});
+        Solution.solution(3,new int[]{3}, new int[]{1});
 
 //        Solution.solution(4,new int[]{1,3}, new int[]{2,4});
 
@@ -24,52 +24,46 @@ public class Main {
 }
 
 class Solution {
+    static boolean []check;
     public static int solution(int n, int[] lost, int[] reserve) {
-        int answer = 0;
-        int []left = new int[n];
-        int []right = new int[n];
+        int answer = n-lost.length;
+        check = new boolean[n+1];
 
-        fillArray(left,lost,reserve);
-        fillArray(right,lost,reserve);
 
-        for(int i=0; i<n; i++){
-            if(left[i]>1){
-                if(i-1>=0){
-                    lend(left,i, i-1);
+        Arrays.sort(lost);
+        Arrays.sort(reserve);
+
+        //같은 학생 걸르기
+        for(int i=0; i<lost.length; i++){
+            for(int j=0; j<reserve.length; j++){
+                if(lost[i]==reserve[j]){
+                    if(!check[lost[i]]){
+                        check[lost[i]] = true;
+                        answer++;
+
+                    }
                 }
             }
-            if (right[i] > 1) {
-                lend(right,i,-1);
+        }
+        for(int i=0; i<lost.length; i++){
+            for(int j=0; j<reserve.length; j++){
+                    if(reserve[j]-1 == lost[i]){
+                        if(!check[reserve[j]] && !check[lost[i]]) {
+                            check[reserve[j]]=true;
+                            check[lost[i]]=true;
+                            answer++;
+                        }
+
+                    }else if(reserve[j]+1 == lost[i]){
+                        if(!check[reserve[j]] && !check[lost[i]]) {
+                            check[reserve[j]]=true;
+                            check[lost[i]]=true;
+                            answer++;
+                        }
+                    }
             }
         }
+        return answer;
 
-        return Math.max((int)Arrays.stream(left)
-                .filter(l -> l>0)
-                .count(),
-                (int)Arrays.stream(right)
-                .filter(r -> r>0)
-                .count());
-    }
-
-    private static void fillArray(int[] arr, int[] lost, int[] reserve) {
-        Arrays.fill(arr,1);
-
-        for(int l : lost){
-            arr[l-1] +=-1;
-        }
-        for(int r : reserve){
-            arr[r-1] +=1;
-        }
-    }
-    private static void lend(int[] uniformCount, int from, int to) {
-        boolean flag = false;
-
-        if (to >= 0 && to < uniformCount.length) { // 배열 인덱스 벗어나지 않고
-            if (uniformCount[to] == 0) {
-                uniformCount[from] -= 1;
-                uniformCount[to] += 1;
-                flag = true;
-            }
-        }
     }
 }
