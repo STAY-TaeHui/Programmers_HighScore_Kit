@@ -10,9 +10,12 @@ public class Main
 //        Solution.solution(new String[][]{{"ICN", "SFO"}, {"ICN", "ATL"}, {"SFO", "ATL"},{"ATL", "ICN"}, {"ATL","SFO"}});
 //        Solution.solution(new String[][]{{"ICN", "JFK"}, {"HND", "IAD"}, {"JFK", "HND"}});
         Solution.solution(new String[][]{{"ICN", "BOO"}, {"ICN", "COO"},{"COO", "ICN"}, {"BOO", "DOO"}});
-        // -> ICN - BOO COO     ICN -> COO ICN
+        // -> ICN - BOO COO
         // -> COO - ICN
         // -> BOO - DOO
+        // -> BOO - BOO
+        //Stack ICN - BOO - DOO
+        //Stack ICN - DOO - BOO
     }
 }
 class Solution {
