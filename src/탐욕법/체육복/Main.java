@@ -16,7 +16,8 @@ public class Main {
     public static void main(String[] args) {
 //        System.out.println(Solution.solution(5, new int[]{2, 4}, new int[]{1, 3, 5}));
 //        System.out.println(Solution.solution(5,new int[]{2,4}, new int[]{3}));
-        Solution.solution(3,new int[]{3}, new int[]{1});
+//        Solution.solution(3,new int[]{3}, new int[]{1});
+        Solution.solution(5,new int[]{1,2,3}, new int[]{2,3,4});
 
 //        Solution.solution(4,new int[]{1,3}, new int[]{2,4});
 
@@ -26,20 +27,50 @@ public class Main {
 class Solution {
     static boolean []check;
     public static int solution(int n, int[] lost, int[] reserve) {
-        int answer = n-lost.length;
-        check = new boolean[n+1];
+        int answer=0;
+        int [] student = new int[n+2]; // int배열은 0으로 초기화됨.
 
+        for(int l : lost){// 분실한 학생은 -1
+            student[l] -=1;
+        }
+        for(int r : reserve){// 여벌이 있는 학생은 +1
+            student[r] +=1;
+        }
+        //본인 체육복이 있는 학생은 0
 
+        for(int i=1; i<student.length-1; i++){
+            if(student[i] == 1){// 여벌이 있는 학생이면
+                if (student[i-1] == -1) {//이전 학생이 분실했다면?
+                    student[i] -=1; //본인꺼 하나 빼기
+                    student[i-1] +=1;//이전 학생에게 주기
+                }else if(student[i+1] == -1){//다음 학생이 분실했다면?
+                    student[i] -=1;// 본인꺼 하나 빼기
+                    student[i+1] +=1;//다음 학색에게 주기
+                }
+            }
+        }
+        for(int i=1; i<student.length-1; i++) {
+            if(student[i] >=0){
+                answer++;
+            }
+        }
+//        return answer;
+            return (int)Arrays.stream(student).filter(s -> s>=0).count()-2;// 분실한 학생 제외 count
+
+        /*int answer = n-lost.length;//전체에서 분실한 학생 제외
+        check = new boolean[n+1];//체육복 주고 받았는지
+
+        //왜 정렬하는지 모르겠음.
         Arrays.sort(lost);
         Arrays.sort(reserve);
 
-        //같은 학생 걸르기
+        //여벌을 갖고있는 학생이 분실했을 때 처리
         for(int i=0; i<lost.length; i++){
             for(int j=0; j<reserve.length; j++){
-                if(lost[i]==reserve[j]){
+                if(lost[i]==reserve[j]){//
                     if(!check[lost[i]]){
                         check[lost[i]] = true;
-                        answer++;
+                        answer++;// 체육복 하나는 남아있으니 수업참여 가능
 
                     }
                 }
@@ -47,15 +78,15 @@ class Solution {
         }
         for(int i=0; i<lost.length; i++){
             for(int j=0; j<reserve.length; j++){
-                    if(reserve[j]-1 == lost[i]){
-                        if(!check[reserve[j]] && !check[lost[i]]) {
+                    if(reserve[j]-1 == lost[i]){// 이전 학생이 분실했을 때
+                        if(!check[reserve[j]] && !check[lost[i]]) {// 둘다 체육복 주고받지 않았고
                             check[reserve[j]]=true;
                             check[lost[i]]=true;
                             answer++;
                         }
 
-                    }else if(reserve[j]+1 == lost[i]){
-                        if(!check[reserve[j]] && !check[lost[i]]) {
+                    }else if(reserve[j]+1 == lost[i]){// 다음 학생이 분실했을 때
+                        if(!check[reserve[j]] && !check[lost[i]]) {// 둘다 체육복 주고받지 않았고
                             check[reserve[j]]=true;
                             check[lost[i]]=true;
                             answer++;
@@ -63,7 +94,7 @@ class Solution {
                     }
             }
         }
-        return answer;
+        return answer;*/
 
     }
 }
